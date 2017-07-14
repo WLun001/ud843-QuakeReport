@@ -78,7 +78,7 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
 
     public String primaryLocation(String location){
         int newStringLength = location.indexOf("of") + 3;
-        return location.substring(newStringLength, location.length() - newStringLength);
+        return location.substring(newStringLength);
     }
 
     public String offsetLocation(String location){
