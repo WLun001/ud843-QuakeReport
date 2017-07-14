@@ -60,4 +60,13 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
         return timeFormat.format(date);
     }
+
+    public String primaryLocation(String location){
+        String priLocation = location.substring(location.indexOf("of"), location.length());
+        return location;
+    }
+
+    public String offsetLocation(String location){
+        return location;
+    }
 }
