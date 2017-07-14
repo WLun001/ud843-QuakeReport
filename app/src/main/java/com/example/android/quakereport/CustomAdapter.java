@@ -16,12 +16,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.android.quakereport.R.id.earthquake;
+
 
 /**
  * Created by Lun on 29/06/2017.
  */
 
 public class CustomAdapter extends ArrayAdapter<Earthquake> {
+
+    private static final String LOCATION_SEPARATOR = " of ";
 
     public CustomAdapter(Activity context, ArrayList<Earthquake> earthquake) {
         super(context, 0, earthquake);
@@ -41,12 +45,13 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
 
         String offsetLoc = "", primaryLoc = "";
 
-        if(earthquake.getLocation().contains("of")){
-            offsetLoc =offsetLocation(earthquake.getLocation());
-            primaryLoc = primaryLocation(earthquake.getLocation());
+        if(earthquake.getLocation().contains(LOCATION_SEPARATOR)){
+            String[] parts = earthquake.getLocation().split(LOCATION_SEPARATOR);
+            offsetLoc = parts[0] + LOCATION_SEPARATOR;
+            primaryLoc = parts[1];
         }
         else {
-            offsetLoc = "Near the ";
+            offsetLoc = getContext().getResources().getString(R.string.near_the) ;
             primaryLoc = earthquake.getLocation();
         }
 
@@ -76,13 +81,4 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         return timeFormat.format(time);
     }
 
-    public String primaryLocation(String location){
-        int newStringLength = location.indexOf("of") + 3;
-        return location.substring(newStringLength);
-    }
-
-    public String offsetLocation(String location){
-        int newStringLength = location.indexOf("of") + 2;
-        return location.substring(0, newStringLength);
-    }
 }
