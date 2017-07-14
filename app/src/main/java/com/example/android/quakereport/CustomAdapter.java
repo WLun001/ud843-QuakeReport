@@ -10,7 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.example.android.quakereport.R.id.date;
 
 /**
  * Created by Lun on 29/06/2017.
@@ -37,9 +41,23 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         TextView location = (TextView) listview.findViewById(R.id.location);
         location.setText(earthquake.getLocation());
 
-        TextView date = (TextView) listview.findViewById(R.id.date);
-        date.setText(earthquake.getDate() + "");
+        Date date = new Date(earthquake.getDate());
+        TextView textDate = (TextView) listview.findViewById(R.id.date);
+        textDate.setText(formatDate(date));
+
+        TextView textTime = (TextView) listview.findViewById(R.id.time);
+        textTime.setText(formatTime(date));
 
         return listview;
+    }
+
+    public String formatDate(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+        return dateFormat.format(date);
+    }
+
+    public String formatTime(Date time){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+        return timeFormat.format(date);
     }
 }
