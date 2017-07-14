@@ -10,11 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.example.android.quakereport.R.id.date;
 
 /**
  * Created by Lun on 29/06/2017.
@@ -38,8 +39,22 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         TextView magnitude = (TextView) listview.findViewById(R.id.magnitude);
         magnitude.setText(Double.toString(earthquake.getMagnitude()));
 
-        TextView location = (TextView) listview.findViewById(R.id.location);
-        location.setText(earthquake.getLocation());
+        String offsetLoc = "", primaryLoc = "";
+
+        if(earthquake.getLocation().contains("of")){
+            offsetLoc =offsetLocation(earthquake.getLocation());
+            primaryLoc = primaryLocation(earthquake.getLocation());
+        }
+        else {
+            offsetLoc = "Near the ";
+            primaryLoc = earthquake.getLocation();
+        }
+
+        TextView offsetLocation = (TextView) listview.findViewById(R.id.offset_location);
+        offsetLocation.setText(offsetLoc);
+
+        TextView primaryLocation = (TextView) listview.findViewById(R.id.primary_location);
+        primaryLocation.setText(primaryLoc);
 
         Date date = new Date(earthquake.getDate());
         TextView textDate = (TextView) listview.findViewById(R.id.date);
@@ -58,15 +73,16 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
 
     public String formatTime(Date time){
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-        return timeFormat.format(date);
+        return timeFormat.format(time);
     }
 
     public String primaryLocation(String location){
-        String priLocation = location.substring(location.indexOf("of"), location.length());
-        return location;
+        int newStringLength = location.indexOf("of") + 3;
+        return location.substring(newStringLength, location.length() - newStringLength);
     }
 
     public String offsetLocation(String location){
-        return location;
+        int newStringLength = location.indexOf("of") + 2;
+        return location.substring(0, newStringLength);
     }
 }
