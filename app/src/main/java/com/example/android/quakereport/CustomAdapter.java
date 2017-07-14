@@ -38,7 +38,7 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         location.setText(earthquake.getLocation());
 
         TextView date = (TextView) listview.findViewById(R.id.date);
-        date.setText(earthquake.getDate().toString());
+        date.setText(earthquake.getDate() + "");
 
         return listview;
     }
