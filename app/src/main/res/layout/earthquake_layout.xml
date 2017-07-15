@@ -9,21 +9,25 @@
 
     <TextView
         android:id="@+id/magnitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="magnitude"
-        android:paddingRight="16dp"/>
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        tools:text="8.7"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:background="@drawable/magnitude_circle"/>
 
     <TextView
         android:id="@+id/offset_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/magnitude"
         tools:text="offset location"/>
 
 
     <TextView
         android:id="@+id/primary_location"
+        android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/offset_location"
