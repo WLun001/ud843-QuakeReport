@@ -16,8 +16,11 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,16 +40,16 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private CustomAdapter adapter;
     private TextView emptyView;
+    ProgressBar loadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
-
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        loadingBar = (ProgressBar) findViewById(R.id.loading_bar);
         emptyView = (TextView) findViewById(R.id.no_content_tv);
 
         earthquakeListView.setEmptyView(emptyView);
@@ -68,6 +71,14 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                     startActivity(intent);
             }
         });
+
+        if(isNetworkAvailable())
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        else
+        {
+            loadingBar.setVisibility(View.GONE);
+            emptyView.setText(getString(R.string.no_network));
+        }
     }
 
     @Override
@@ -88,5 +99,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
         adapter.clear();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
