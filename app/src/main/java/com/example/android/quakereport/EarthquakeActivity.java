@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private CustomAdapter adapter;
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        emptyView = (TextView) findViewById(R.id.no_content_tv);
+        earthquakeListView.setEmptyView(emptyView);
 
         // Create a new {@link CustomAdapter} of earthquakes
         adapter = new CustomAdapter(this, new ArrayList<Earthquake>());
@@ -74,6 +78,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         adapter.clear();
         if (earthquakes != null && !earthquakes.isEmpty())
             adapter.addAll(earthquakes);
+        else
+            emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
