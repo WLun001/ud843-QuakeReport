@@ -25,36 +25,34 @@ public final class QueryUtils {
 
     public static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
-    public static List<Earthquake> fetchDate(String requestUrl){
+    public static List<Earthquake> fetchDate(String requestUrl) {
         URL url = createURL(requestUrl);
         String jsonResponse = null;
-        try{
+        try {
             jsonResponse = makeHttpRequest(url);
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing input stream", e);
         }
         return extraFromJSON(jsonResponse);
     }
 
-    private static URL createURL(String stringUrl){
+    private static URL createURL(String stringUrl) {
         URL url = null;
-        try{
+        try {
             url = new URL(stringUrl);
-        }
-        catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Error with creating url", e);
         }
         return url;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException{
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder builder = new StringBuilder();
-        if(inputStream != null){
+        if (inputStream != null) {
             InputStreamReader streamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader bufferedReader = new BufferedReader(streamReader);
             String line = bufferedReader.readLine();
-            while(line != null){
+            while (line != null) {
                 builder.append(line);
                 line = bufferedReader.readLine();
             }
@@ -62,16 +60,16 @@ public final class QueryUtils {
         return builder.toString();
     }
 
-    private static String makeHttpRequest(URL url) throws IOException{
+    private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
         //if the url is null, return earlier
-        if(url == null)
+        if (url == null)
             return jsonResponse;
 
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;
-        try{
+        try {
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setReadTimeout(1000); // in milliseconds
             httpURLConnection.setConnectTimeout(1500);
@@ -79,34 +77,31 @@ public final class QueryUtils {
             httpURLConnection.connect();
 
             //if the request code is successful, then read the input stream and parse the response
-            if(httpURLConnection.getResponseCode() == 200){
+            if (httpURLConnection.getResponseCode() == 200) {
                 inputStream = httpURLConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
-            }
-            else
+            } else
                 Log.e(LOG_TAG, "Error respond code " + httpURLConnection.getResponseCode());
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Problem retrieving the JSON result", e);
-        }
-        finally{
-            if(httpURLConnection != null)
+        } finally {
+            if (httpURLConnection != null)
                 httpURLConnection.disconnect();
-            if(inputStream != null)
+            if (inputStream != null)
                 inputStream.close();
         }
         return jsonResponse;
     }
 
-    private static List<Earthquake> extraFromJSON(String json){
-        if(TextUtils.isEmpty(json))
+    private static List<Earthquake> extraFromJSON(String json) {
+        if (TextUtils.isEmpty(json))
             return null;
 
         List<Earthquake> earthquakes = new ArrayList<>();
-        try{
+        try {
             JSONObject root = new JSONObject(json);
             JSONArray array = root.getJSONArray("features");
-            for(int i = 0; i < array.length(); i ++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject featureObj = array.getJSONObject(i);
                 JSONObject propertiesObj = featureObj.getJSONObject("properties");
                 double mag = propertiesObj.getDouble("mag");
@@ -116,8 +111,7 @@ public final class QueryUtils {
                 earthquakes.add(new Earthquake(mag, location, date, url));
             }
             return earthquakes;
-        }
-        catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
         return null;

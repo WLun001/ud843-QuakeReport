@@ -15,7 +15,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Lun on 29/06/2017.
@@ -33,7 +32,7 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listview = convertView;
-        if(listview == null){
+        if (listview == null) {
             listview = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_layout, parent, false);
         }
         Earthquake earthquake = getItem(position);
@@ -53,13 +52,12 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
 
         String offsetLoc = "", primaryLoc = "";
 
-        if(earthquake.getLocation().contains(LOCATION_SEPARATOR)){
+        if (earthquake.getLocation().contains(LOCATION_SEPARATOR)) {
             String[] parts = earthquake.getLocation().split(LOCATION_SEPARATOR);
             offsetLoc = parts[0] + LOCATION_SEPARATOR;
             primaryLoc = parts[1];
-        }
-        else {
-            offsetLoc = getContext().getResources().getString(R.string.near_the) ;
+        } else {
+            offsetLoc = getContext().getResources().getString(R.string.near_the);
             primaryLoc = earthquake.getLocation();
         }
 
@@ -79,45 +77,55 @@ public class CustomAdapter extends ArrayAdapter<Earthquake> {
         return listview;
     }
 
-    public String formatDate(Date date){
+    public String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
         return dateFormat.format(date);
     }
 
-    public String formatTime(Date time){
+    public String formatTime(Date time) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
         return timeFormat.format(time);
     }
 
-    public String formatMagnitude(double mag){
+    public String formatMagnitude(double mag) {
         DecimalFormat decimalFormat = new DecimalFormat("0.0");
         return decimalFormat.format(mag);
     }
 
-    public int getMagnitudeColor(double mag){
+    public int getMagnitudeColor(double mag) {
         int resourceId;
         int magnitude = (int) Math.floor(mag);
-        switch (magnitude){
+        switch (magnitude) {
             case 0:
-            case 1: resourceId = R.color.magnitude1;
+            case 1:
+                resourceId = R.color.magnitude1;
                 break;
-            case 2: resourceId = R.color.magnitude2;
+            case 2:
+                resourceId = R.color.magnitude2;
                 break;
-            case 3: resourceId = R.color.magnitude3;
+            case 3:
+                resourceId = R.color.magnitude3;
                 break;
-            case 4: resourceId = R.color.magnitude4;
+            case 4:
+                resourceId = R.color.magnitude4;
                 break;
-            case 5: resourceId = R.color.magnitude5;
+            case 5:
+                resourceId = R.color.magnitude5;
                 break;
-            case 6: resourceId = R.color.magnitude6;
+            case 6:
+                resourceId = R.color.magnitude6;
                 break;
-            case 7: resourceId = R.color.magnitude7;
+            case 7:
+                resourceId = R.color.magnitude7;
                 break;
-            case 8: resourceId = R.color.magnitude8;
+            case 8:
+                resourceId = R.color.magnitude8;
                 break;
-            case 9: resourceId = R.color.magnitude9;
+            case 9:
+                resourceId = R.color.magnitude9;
                 break;
-            default: resourceId = R.color.magnitude10plus;
+            default:
+                resourceId = R.color.magnitude10plus;
                 break;
         }
         return ContextCompat.getColor(getContext(), resourceId);

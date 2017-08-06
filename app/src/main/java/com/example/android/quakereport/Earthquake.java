@@ -1,7 +1,5 @@
 package com.example.android.quakereport;
 
-import java.util.Date;
-
 /**
  * Created by Lun on 29/06/2017.
  */
@@ -13,7 +11,7 @@ public class Earthquake {
     private long date;
     private String url;
 
-    public Earthquake(double magnitude, String location, long date, String url){
+    public Earthquake(double magnitude, String location, long date, String url) {
         this.magnitude = magnitude;
         this.location = location;
         this.date = date;
@@ -21,19 +19,19 @@ public class Earthquake {
 
     }
 
-    public double getMagnitude(){
+    public double getMagnitude() {
         return magnitude;
     }
 
-    public String getLocation(){
+    public String getLocation() {
         return location;
     }
 
-    public long getDate(){
+    public long getDate() {
         return date;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return url;
     }
 }
