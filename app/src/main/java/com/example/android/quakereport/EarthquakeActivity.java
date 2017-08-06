@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
         emptyView = (TextView) findViewById(R.id.no_content_tv);
+
         earthquakeListView.setEmptyView(emptyView);
 
         // Create a new {@link CustomAdapter} of earthquakes
@@ -76,10 +78,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
         adapter.clear();
+        ProgressBar loadingBar = (ProgressBar) findViewById(R.id.loading_bar);
+        loadingBar.setVisibility(View.GONE);
+        emptyView.setText(getString(R.string.empty_content));
         if (earthquakes != null && !earthquakes.isEmpty())
             adapter.addAll(earthquakes);
-        else
-            emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
